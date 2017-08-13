@@ -1,7 +1,6 @@
 //
 //#include <iostream>
-//#define SIZE 24
-//
+//#define SIZE 4
 //
 //void printBoard(int board[SIZE][SIZE])
 //{

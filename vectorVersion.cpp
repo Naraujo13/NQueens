@@ -4,9 +4,12 @@
 
 #include <iostream>
 #include <algorithm>
+#include <thread>
+#include <future>
 
-#define N 15
+#define N 20
 
+std::mutex solutionMutex;
 
 bool verifySolution(int solution[N]){
     for (int i = 0; i < N; i++){
@@ -22,13 +25,6 @@ bool verifySolution(int solution[N]){
     return true;
 }
 
-bool permutate(int solution[N]){
-    while(std::next_permutation(solution, solution + N)){
-        if (verifySolution(solution))
-            return true;
-    }
-    return false;
-}
 
 void printBoard(int solution[N])
 {
@@ -41,7 +37,6 @@ void printBoard(int solution[N])
         std::cout <<"+" << std::endl;
 
         //Line Results
-        std::cout << " ";
         for (int j = 0; j < N; j++) {
             std::cout << "|";
             if(solution[i] == j)    //Empty Place
@@ -56,24 +51,70 @@ void printBoard(int solution[N])
     for (int j = 0; j < N; j++) {
         std::cout << "+---";
     }
-    std::cout<<"+";
+    std::cout<<"+" << std::endl;
 }
 
+void permutate(int solution[N], std::promise<bool>&& p, std::shared_future<bool> f[N], int id){
 
+    int copy[N];
+    for (int i = 0; i < N; i ++)
+        copy[i] = solution[i];
+
+    while(std::next_permutation(copy, copy + N)){
+        //Verifica se outra thread achou a solução
+//        for (int i = 0; i < N; i++){
+//            if (f[i].valid() && f[i].get())
+//                return;
+//        }
+        //Procura solução
+        if (verifySolution(copy)) {
+            p.set_value(true);
+
+            solutionMutex.lock();
+
+            for (int i = 0; i < N; i++)
+                solution[i] = copy[i];
+            std::fflush(stdout);
+            std::cout << "Thread " << id << " found a solution!" << std::endl;
+            for (int i =0; i<N; i++)
+                std::cout << copy[i];
+            std::cout << std::endl;
+            std::fflush(stdout);
+
+            solutionMutex.unlock();
+
+            return;
+        }
+    }
+    p.set_value(false);
+    return;
+}
 
 int main(){
 
+    //Solution
     int solution[N];
 
     //Preenche vetor
     for (int i = 0; i < N; i++)
         solution[i] = i;
 
-    if (permutate(solution))
-        printBoard(solution);
-    else
-        std::cout << "No solution found" << std::endl;
+    std::promise<bool> p[N];
+    std::shared_future<bool> f[N];
+    std::thread t[N];
 
+    for (int i = 0 ; i < N; i++)
+        f[i] = p[i].get_future();
+
+    for (int i=0; i<N; i++){
+        t[i] = std::thread(permutate, std::ref(solution), std::move(p[i]), std::ref(f), i); //change solution each iteration
+        //t[i].detach();
+    }
+
+    for (int i = 0 ; i < N; i++)
+        t[i].join();
+
+    printBoard(solution);
 
     return 0;
 }
