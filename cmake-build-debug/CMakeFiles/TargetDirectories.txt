@@ -1,3 +1,0 @@
-/home/naraujo/Dev/N-Queens/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/home/naraujo/Dev/N-Queens/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/naraujo/Dev/N-Queens/cmake-build-debug/CMakeFiles/N_Queens.dir

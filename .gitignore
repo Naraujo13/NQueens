@@ -33,3 +33,6 @@
 
 # Project folder
 .idea
+cmake-build-debug
+
+*.cmake

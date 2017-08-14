@@ -1,2 +1,0 @@
-Options: 
-CMake: 3.7.1@/opt/JetBrains/apps/CLion/ch-0/171.4073.41/bin/cmake/bin/cmake
