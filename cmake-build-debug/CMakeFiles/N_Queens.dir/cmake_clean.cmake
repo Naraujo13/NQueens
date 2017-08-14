@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/N_Queens.dir/main.cpp.o"
+  "CMakeFiles/N_Queens.dir/vectorVersion.cpp.o"
   "N_Queens.pdb"
   "N_Queens"
 )

@@ -123,32 +123,32 @@ N_Queens/fast:
 	$(MAKE) -f CMakeFiles/N_Queens.dir/build.make CMakeFiles/N_Queens.dir/build
 .PHONY : N_Queens/fast
 
-main.o: main.cpp.o
+vectorVersion.o: vectorVersion.cpp.o
 
-.PHONY : main.o
+.PHONY : vectorVersion.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/N_Queens.dir/build.make CMakeFiles/N_Queens.dir/main.cpp.o
-.PHONY : main.cpp.o
+vectorVersion.cpp.o:
+	$(MAKE) -f CMakeFiles/N_Queens.dir/build.make CMakeFiles/N_Queens.dir/vectorVersion.cpp.o
+.PHONY : vectorVersion.cpp.o
 
-main.i: main.cpp.i
+vectorVersion.i: vectorVersion.cpp.i
 
-.PHONY : main.i
+.PHONY : vectorVersion.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/N_Queens.dir/build.make CMakeFiles/N_Queens.dir/main.cpp.i
-.PHONY : main.cpp.i
+vectorVersion.cpp.i:
+	$(MAKE) -f CMakeFiles/N_Queens.dir/build.make CMakeFiles/N_Queens.dir/vectorVersion.cpp.i
+.PHONY : vectorVersion.cpp.i
 
-main.s: main.cpp.s
+vectorVersion.s: vectorVersion.cpp.s
 
-.PHONY : main.s
+.PHONY : vectorVersion.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/N_Queens.dir/build.make CMakeFiles/N_Queens.dir/main.cpp.s
-.PHONY : main.cpp.s
+vectorVersion.cpp.s:
+	$(MAKE) -f CMakeFiles/N_Queens.dir/build.make CMakeFiles/N_Queens.dir/vectorVersion.cpp.s
+.PHONY : vectorVersion.cpp.s
 
 # Help Target
 help:
@@ -159,9 +159,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... N_Queens"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... vectorVersion.o"
+	@echo "... vectorVersion.i"
+	@echo "... vectorVersion.s"
 .PHONY : help
 
 

@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/naraujo/Dev/N-Queens/main.cpp" "/home/naraujo/Dev/N-Queens/cmake-build-debug/CMakeFiles/N_Queens.dir/main.cpp.o"
+  "/home/naraujo/Dev/N-Queens/vectorVersion.cpp" "/home/naraujo/Dev/N-Queens/cmake-build-debug/CMakeFiles/N_Queens.dir/vectorVersion.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

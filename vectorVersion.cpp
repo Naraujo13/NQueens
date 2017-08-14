@@ -7,10 +7,16 @@
 #include <thread>
 #include <future>
 
-#define N 6
+#define N 12
 //Solution
-int solution[N];
 std::mutex solutionMutex;
+int solution[N];
+
+//Aux
+std::mutex auxMutex;
+
+std::mutex stopMutex;
+bool stop = false;
 
 bool verifySolution(int copy[N-1], int threadId){
 
@@ -73,6 +79,10 @@ void printBoard(int solution[N])
 
 void setSolution(int copy[N-1], int threadId){
 
+    stopMutex.lock();
+    stop = true;
+    stopMutex.unlock();
+
     solutionMutex.lock();
 
     //Copia solução encontrada
@@ -84,7 +94,7 @@ void setSolution(int copy[N-1], int threadId){
     std::fflush(stdout);
     std::cout << "Thread " << threadId << " found a solution!" << std::endl;
     for (int i =0; i<N; i++)
-        std::cout << solution[i];
+        std::cout << solution[i] << "|";
     std::cout << std::endl;
     std::fflush(stdout);
 
@@ -93,11 +103,15 @@ void setSolution(int copy[N-1], int threadId){
 
 void permutate(int aux[N-1], std::promise<bool>&& p, std::shared_future<bool> f[N], int threadId){
 
+    //Copia inicial para local
     int copy[N-1];
     for (int i = 0; i < N-1; i ++)
         copy[i] = aux[i];
 
-    while(std::next_permutation(copy, copy + N-1)){
+    //Libera inicial
+    auxMutex.unlock();
+
+    while(!stop && std::next_permutation(copy, copy + N-1)){
         //Verifica se outra thread achou a solução
 //        for (int i = 0; i < N; i++){
 //            if (f[i].valid() && f[i].get())
@@ -134,6 +148,8 @@ int main(){
     for (int i=0; i<N; i++){
         int aux[N-1];
 
+        //Lock vetor inicial
+        auxMutex.lock();
         //Cria array de permutação inicial dessa thread para dividir o trabalho
         for (int j = 0, k = 0; k<N-1, j<N; j++){
             if (i != j) {
@@ -143,10 +159,9 @@ int main(){
         }
 
         //Cria thread
-        t[i] = std::thread(permutate, std::ref(aux), std::move(p[i]), std::ref(f), i); //change solution each iteration
+        t[i] = std::thread(permutate, aux, std::move(p[i]), std::ref(f), i); //change solution each iteration
 
     }
-
     //Join nas threads
     for (int i = 0 ; i < N; i++)
         t[i].join();
@@ -155,7 +170,7 @@ int main(){
     solutionMutex.lock();
     std::cout <<std::endl<<std::endl<< "Solução final:" <<std::endl;
     for (int i =0; i<N; i++)
-        std::cout << solution[i];
+        std::cout << solution[i] << "|";
     std::cout<<std::endl;
     printBoard(solution);
     solutionMutex.unlock();

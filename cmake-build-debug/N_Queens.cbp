@@ -82,7 +82,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/naraujo/Dev/N-Queens/main.cpp">
+		<Unit filename="/home/naraujo/Dev/N-Queens/vectorVersion.cpp">
 			<Option target="N_Queens"/>
 		</Unit>
 		<Unit filename="/home/naraujo/Dev/N-Queens/CMakeLists.txt">

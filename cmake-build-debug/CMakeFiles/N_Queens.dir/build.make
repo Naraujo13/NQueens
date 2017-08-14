@@ -57,38 +57,38 @@ include CMakeFiles/N_Queens.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/N_Queens.dir/flags.make
 
-CMakeFiles/N_Queens.dir/main.cpp.o: CMakeFiles/N_Queens.dir/flags.make
-CMakeFiles/N_Queens.dir/main.cpp.o: ../main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/naraujo/Dev/N-Queens/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/N_Queens.dir/main.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/N_Queens.dir/main.cpp.o -c /home/naraujo/Dev/N-Queens/main.cpp
+CMakeFiles/N_Queens.dir/vectorVersion.cpp.o: CMakeFiles/N_Queens.dir/flags.make
+CMakeFiles/N_Queens.dir/vectorVersion.cpp.o: ../vectorVersion.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/naraujo/Dev/N-Queens/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/N_Queens.dir/vectorVersion.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/N_Queens.dir/vectorVersion.cpp.o -c /home/naraujo/Dev/N-Queens/vectorVersion.cpp
 
-CMakeFiles/N_Queens.dir/main.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/N_Queens.dir/main.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/naraujo/Dev/N-Queens/main.cpp > CMakeFiles/N_Queens.dir/main.cpp.i
+CMakeFiles/N_Queens.dir/vectorVersion.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/N_Queens.dir/vectorVersion.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/naraujo/Dev/N-Queens/vectorVersion.cpp > CMakeFiles/N_Queens.dir/vectorVersion.cpp.i
 
-CMakeFiles/N_Queens.dir/main.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/N_Queens.dir/main.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/naraujo/Dev/N-Queens/main.cpp -o CMakeFiles/N_Queens.dir/main.cpp.s
+CMakeFiles/N_Queens.dir/vectorVersion.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/N_Queens.dir/vectorVersion.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/naraujo/Dev/N-Queens/vectorVersion.cpp -o CMakeFiles/N_Queens.dir/vectorVersion.cpp.s
 
-CMakeFiles/N_Queens.dir/main.cpp.o.requires:
+CMakeFiles/N_Queens.dir/vectorVersion.cpp.o.requires:
 
-.PHONY : CMakeFiles/N_Queens.dir/main.cpp.o.requires
+.PHONY : CMakeFiles/N_Queens.dir/vectorVersion.cpp.o.requires
 
-CMakeFiles/N_Queens.dir/main.cpp.o.provides: CMakeFiles/N_Queens.dir/main.cpp.o.requires
-	$(MAKE) -f CMakeFiles/N_Queens.dir/build.make CMakeFiles/N_Queens.dir/main.cpp.o.provides.build
-.PHONY : CMakeFiles/N_Queens.dir/main.cpp.o.provides
+CMakeFiles/N_Queens.dir/vectorVersion.cpp.o.provides: CMakeFiles/N_Queens.dir/vectorVersion.cpp.o.requires
+	$(MAKE) -f CMakeFiles/N_Queens.dir/build.make CMakeFiles/N_Queens.dir/vectorVersion.cpp.o.provides.build
+.PHONY : CMakeFiles/N_Queens.dir/vectorVersion.cpp.o.provides
 
-CMakeFiles/N_Queens.dir/main.cpp.o.provides.build: CMakeFiles/N_Queens.dir/main.cpp.o
+CMakeFiles/N_Queens.dir/vectorVersion.cpp.o.provides.build: CMakeFiles/N_Queens.dir/vectorVersion.cpp.o
 
 
 # Object files for target N_Queens
 N_Queens_OBJECTS = \
-"CMakeFiles/N_Queens.dir/main.cpp.o"
+"CMakeFiles/N_Queens.dir/vectorVersion.cpp.o"
 
 # External object files for target N_Queens
 N_Queens_EXTERNAL_OBJECTS =
 
-N_Queens: CMakeFiles/N_Queens.dir/main.cpp.o
+N_Queens: CMakeFiles/N_Queens.dir/vectorVersion.cpp.o
 N_Queens: CMakeFiles/N_Queens.dir/build.make
 N_Queens: CMakeFiles/N_Queens.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/naraujo/Dev/N-Queens/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable N_Queens"
@@ -99,7 +99,7 @@ CMakeFiles/N_Queens.dir/build: N_Queens
 
 .PHONY : CMakeFiles/N_Queens.dir/build
 
-CMakeFiles/N_Queens.dir/requires: CMakeFiles/N_Queens.dir/main.cpp.o.requires
+CMakeFiles/N_Queens.dir/requires: CMakeFiles/N_Queens.dir/vectorVersion.cpp.o.requires
 
 .PHONY : CMakeFiles/N_Queens.dir/requires
 

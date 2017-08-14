@@ -6,7 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/naraujo/Dev/N-Queens/main.cpp
+/home/naraujo/Dev/N-Queens/vectorVersion.cpp
 iostream
+-
+algorithm
+-
+thread
+-
+future
 -
 
