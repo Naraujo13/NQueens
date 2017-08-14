@@ -79,11 +79,10 @@ void printBoard(int solution[N])
 
 void setSolution(int copy[N-1], int threadId){
 
-    stopMutex.lock();
-    stop = true;
-    stopMutex.unlock();
+    std::lock_guard<std::mutex> stopGuard(stopMutex);
+    std::lock_guard<std::mutex> solutionGuard(solutionMutex);
 
-    solutionMutex.lock();
+    stop = true;
 
     //Copia solução encontrada
     solution[0] = threadId;
@@ -98,7 +97,6 @@ void setSolution(int copy[N-1], int threadId){
     std::cout << std::endl;
     std::fflush(stdout);
 
-    solutionMutex.unlock();
 }
 
 void permutate(int aux[N-1], std::promise<bool>&& p, std::shared_future<bool> f[N], int threadId){
@@ -132,8 +130,10 @@ void permutate(int aux[N-1], std::promise<bool>&& p, std::shared_future<bool> f[
 
 int main(){
 
+    clock_t tStart = clock();
+
     //Preenche vetor
-    solutionMutex.lock();
+    std::lock_guard<std::mutex> intializationGuard(solutionMutex);
     for (int i = 0; i < N; i++)
         solution[i] = i;
     solutionMutex.unlock();
@@ -167,13 +167,13 @@ int main(){
         t[i].join();
 
     //Printa solução
-    solutionMutex.lock();
+    std::lock_guard<std::mutex> printGuard(solutionMutex);
     std::cout <<std::endl<<std::endl<< "Solução final:" <<std::endl;
     for (int i =0; i<N; i++)
         std::cout << solution[i] << "|";
     std::cout<<std::endl;
+    std::cout << "Tempo de execução: " << ((double)(clock() - tStart)/CLOCKS_PER_SEC) << " segundos" << std::endl;
     printBoard(solution);
-    solutionMutex.unlock();
 
     return 0;
 }
