@@ -1,13 +1,9 @@
-//
-// Created by naraujo on 13/08/17.
-//
-
 #include <iostream>
 #include <algorithm>
 #include <thread>
 #include <future>
 
-#define N 12
+#define N 5
 //Solution
 std::mutex solutionMutex;
 int solution[N];
@@ -166,14 +162,26 @@ int main(){
     for (int i = 0 ; i < N; i++)
         t[i].join();
 
-    //Printa solução
-    std::lock_guard<std::mutex> printGuard(solutionMutex);
-    std::cout <<std::endl<<std::endl<< "Solução final:" <<std::endl;
-    for (int i =0; i<N; i++)
-        std::cout << solution[i] << "|";
-    std::cout<<std::endl;
-    std::cout << "Tempo de execução: " << ((double)(clock() - tStart)/CLOCKS_PER_SEC) << " segundos" << std::endl;
-    printBoard(solution);
+    //Recupera futuros
+    bool found;
+    for (int i = 0 ; i < N; i++) {
+        if (f[i].get())
+            found = true;
+    }
+
+    if(found) {
+        //Printa solução
+        std::lock_guard<std::mutex> printGuard(solutionMutex);
+        std::cout << std::endl << std::endl << "Solução final:" << std::endl;
+        for (int i = 0; i < N; i++)
+            std::cout << solution[i] << "|";
+        std::cout << std::endl;
+        std::cout << "Tempo de execução: " << ((double) (clock() - tStart) / CLOCKS_PER_SEC) << " segundos" <<
+        std::endl;
+        printBoard(solution);
+    }
+    else
+        std::cout << "No solution was found" <<std::endl;
 
     return 0;
 }
