@@ -1,43 +1,62 @@
-//
-// Created by naraujo on 13/08/17.
-//
+//Nícolas Oreques de Araujo 13/08/2017
 
 #include <iostream>
 #include <algorithm>
 #include <thread>
 #include <future>
-
-#define N 20
-
+#define N 999
+//Solution
 std::mutex solutionMutex;
+int solution[N];
 
-bool verifySolution(int solution[N]){
-    for (int i = 0; i < N; i++){
-        for (int j = i + 1; j < N; j++){
+//Aux
+std::mutex auxMutex;
+
+std::mutex stopMutex;
+bool stop = false;
+
+bool verifySolution(int size, int copy[N-1], int threadId){
+
+    int test[size];
+    test[0] = threadId;
+    for (int i = 0; i<size-1; i++)
+        test[i+1] = copy[i];
+
+//    for (int i = 0; i<N; i++){
+//        for (int j = 0; j<N; j++){
+//            if (i != j && test[i] == test[j])
+//                return false;
+//        }
+//    }
+
+    for (int i = 0; i < size; i++){
+        for (int j = i + 1; j < size; j++){
             //Diagonal Inferior Direita
-            if (solution[j] == solution[i] + (j - i))
+            if (test[j] == test[i] + (j - i))
                 return false;
             //Diagonal Inferior Esquerda
-            if (solution[j] == solution[i] - (j - i))
+            if (test[j] == test[i] - (j - i))
                 return false;
         };
     };
+
     return true;
 }
 
 
-void printBoard(int solution[N])
+void printBoard(int size, int solution[N])
 {
-    for (int i = 0; i < N; i++) {
+    std::fflush(stdout);
+    for (int i = 0; i < size; i++) {
 
         //Divisor above lines
-        for (int j = 0; j < N; j++) {
+        for (int j = 0; j < size; j++) {
             std::cout << "+---";
         }
         std::cout <<"+" << std::endl;
 
         //Line Results
-        for (int j = 0; j < N; j++) {
+        for (int j = 0; j < size; j++) {
             std::cout << "|";
             if(solution[i] == j)    //Empty Place
                 std::cout << " Q ";
@@ -48,40 +67,56 @@ void printBoard(int solution[N])
     }
 
     //Line below board
-    for (int j = 0; j < N; j++) {
+    for (int j = 0; j < size; j++) {
         std::cout << "+---";
     }
     std::cout<<"+" << std::endl;
+    std::fflush(stdout);
 }
 
-void permutate(int solution[N], std::promise<bool>&& p, std::shared_future<bool> f[N], int id){
+void setSolution(int size, int copy[N-1], int threadId){
 
-    int copy[N];
-    for (int i = 0; i < N; i ++)
-        copy[i] = solution[i];
+    std::lock_guard<std::mutex> stopGuard(stopMutex);
+    std::lock_guard<std::mutex> solutionGuard(solutionMutex);
 
-    while(std::next_permutation(copy, copy + N)){
+    stop = true;
+
+    //Copia solução encontrada
+    solution[0] = threadId;
+    for (int i = 0; i < size-1; i++)
+        solution[i+1] = copy[i];
+
+    //Print
+    std::fflush(stdout);
+    std::cout << "Thread " << threadId << " found a solution!" << std::endl;
+    for (int i =0; i<size; i++)
+        std::cout << solution[i] << "|";
+    std::cout << std::endl;
+    std::fflush(stdout);
+
+}
+
+void permutate(int size, int aux[N-1], std::promise<bool>&& p, int threadId){
+
+    //Copia inicial para local
+    int copy[size-1];
+    for (int i = 0; i < size-1; i ++)
+        copy[i] = aux[i];
+
+    //Libera inicial
+    auxMutex.unlock();
+
+    while(!stop && std::next_permutation(copy, copy + size-1)){
         //Verifica se outra thread achou a solução
 //        for (int i = 0; i < N; i++){
 //            if (f[i].valid() && f[i].get())
 //                return;
 //        }
         //Procura solução
-        if (verifySolution(copy)) {
+        if (verifySolution(size, copy, threadId)) {
             p.set_value(true);
 
-            solutionMutex.lock();
-
-            for (int i = 0; i < N; i++)
-                solution[i] = copy[i];
-            std::fflush(stdout);
-            std::cout << "Thread " << id << " found a solution!" << std::endl;
-            for (int i =0; i<N; i++)
-                std::cout << copy[i];
-            std::cout << std::endl;
-            std::fflush(stdout);
-
-            solutionMutex.unlock();
+            setSolution(size, copy, threadId);
 
             return;
         }
@@ -92,29 +127,62 @@ void permutate(int solution[N], std::promise<bool>&& p, std::shared_future<bool>
 
 int main(){
 
-    //Solution
-    int solution[N];
-
+    int size = 0;
+    std::cout << "Insira N (dimensao/rainhas): ";
+    std::cin >> size;
+    std::cout << std::endl;
     //Preenche vetor
-    for (int i = 0; i < N; i++)
+    std::lock_guard<std::mutex> intializationGuard(solutionMutex);
+    for (int i = 0; i < size; i++)
         solution[i] = i;
+    solutionMutex.unlock();
 
-    std::promise<bool> p[N];
-    std::shared_future<bool> f[N];
-    std::thread t[N];
+    std::promise<bool> p[size];
+    std::shared_future<bool> f[size];
+    std::thread t[size];
 
-    for (int i = 0 ; i < N; i++)
+    for (int i = 0 ; i < size; i++)
         f[i] = p[i].get_future();
 
-    for (int i=0; i<N; i++){
-        t[i] = std::thread(permutate, std::ref(solution), std::move(p[i]), std::ref(f), i); //change solution each iteration
-        //t[i].detach();
-    }
+    for (int i=0; i<size; i++){
+        int aux[N-1];
 
-    for (int i = 0 ; i < N; i++)
+        //Lock vetor inicial
+        auxMutex.lock();
+        //Cria array de permutação inicial dessa thread para dividir o trabalho
+        for (int j = 0, k = 0; k<size-1, j<size; j++){
+            if (i != j) {
+                aux[k] = j;
+                k++;
+            }
+        }
+
+        //Cria thread
+        t[i] = std::thread(permutate, size, aux, std::move(p[i]), i); //change solution each iteration
+
+    }
+    //Join nas threads
+    for (int i = 0 ; i < size; i++)
         t[i].join();
 
-    printBoard(solution);
+    //Recupera futuros
+    bool found;
+    for (int i = 0 ; i < size; i++) {
+        if (f[i].get())
+            found = true;
+    }
+
+    if(found) {
+        //Printa solução
+        std::lock_guard<std::mutex> printGuard(solutionMutex);
+        std::cout << std::endl << std::endl << "Solução final:" << std::endl;
+        for (int i = 0; i < size; i++)
+            std::cout << solution[i] << "|";
+        std::cout << std::endl;
+        printBoard(size, solution);
+    }
+    else
+        std::cout << "Nenhuma solução foi encontrada para N = " << size << std::endl;
 
     return 0;
 }
