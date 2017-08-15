@@ -1,3 +1,5 @@
+//Nícolas Oreques de Araujo 13/08/2017
+
 #include <iostream>
 #include <algorithm>
 #include <thread>
@@ -125,10 +127,8 @@ void permutate(int size, int aux[N-1], std::promise<bool>&& p, int threadId){
 
 int main(){
 
-    clock_t tStart = clock();
-
     int size = 0;
-    std::cout << "Insira o número de rainhas/tamanho do tabuleiro: ";
+    std::cout << "Insira N (dimensao/rainhas): ";
     std::cin >> size;
     std::cout << std::endl;
     //Preenche vetor
@@ -179,12 +179,10 @@ int main(){
         for (int i = 0; i < size; i++)
             std::cout << solution[i] << "|";
         std::cout << std::endl;
-        std::cout << "Tempo de execução: " << ((double) (clock() - tStart) / CLOCKS_PER_SEC) << " segundos" <<
-        std::endl;
         printBoard(size, solution);
     }
     else
-        std::cout << "No solution was found" <<std::endl;
+        std::cout << "Nenhuma solução foi encontrada para N = " << size << std::endl;
 
     return 0;
 }
